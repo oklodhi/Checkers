@@ -21,10 +21,10 @@ GAME_PIECE_SIZE = 100
 
 class Game:
     def __init__(self):
-        self.token = None
         self.status = 'playing'
         self.turn = r.randrange(2)
         self.players = ['x','o']
+        self.token = None
         self.can_jump = False
         pyg.display.set_caption("%s's turn" % self.players[self.turn % 2])
         self.game_board = [ ['x','_','x','_','x','_','x','_'],
@@ -37,8 +37,8 @@ class Game:
 			    ['_','o','_','o','_','o','_','o'] ]
 
     def check_mouse_click(self, mouse_position):
-        row = get_mouse_x(mouse_position)
-        column = get_mouse_y(mouse_position)
+        row = get_mouse_y(mouse_position)
+        column = get_mouse_x(mouse_position)
         if self.token:
             return True
         else:
