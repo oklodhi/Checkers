@@ -47,9 +47,9 @@ class Game:
         else:
             if self.game_board[row][column].lower() == self.players[self.turn%2]:
                 self.token = [row, column]
-                #screen.blit(self.game_board[row][column].lower(), (column, row))
+                screen.blit(self.game_board[row][column].lower(), (column, row))
         
-    def draw(self):
+    def draw(self, imgx, imgy, imgg):
         for i in range(9):
             pyg.draw.line(screen, c_BLACK, [int(float(i*WIDTH/8)), 0], [int(float(i*WIDTH/8)), HEIGHT], 5)
             pyg.draw.line(screen, c_BLACK, [0, int(float(i*HEIGHT/8))], [WIDTH, int(float(i*HEIGHT/8))], 5)
@@ -57,30 +57,24 @@ class Game:
         for r in range(len(self.game_board)):
             for c in range(len(self.game_board[r])):
                 pieces = self.game_board[r][c]
-                if pieces == 'x':
-                    change_color = c_RED
-                else:
-                    change_color = c_BLACK
+                #if pieces == 'x':
+                   # change_color = c_RED
+                #else:
+                   # change_color = c_BLACK
                 if self.token:
                     if self.token[0] == r and self.token[1] == c:
-                        change_color = c_GREEN
+                        loadImg_g = pyg.image.load(imgg+".png")
+                        screen.blit(loadImg_g, ([int(float(x - img_x.width/2)), int(float(y - img_x.height/2))]))
                 if pieces != '_':
+                    x = WIDTH / 8 * c + WIDTH / 16
+                    y = HEIGHT / 8 * r + HEIGHT / 16
                     if pieces == 'x':
-                        img = Image.new('RGB', (100, 100), color=c_RED)
-                        d = ImageDraw.Draw(img)
-                        d.text((20, 20), 'X', fill=c_RED)
-                        img.show()
+                        loadImg_x = pyg.image.load(imgx+".png")
+                        screen.blit(loadImg_x, ([int(float(x - img_x.width/2)), int(float(y - img_x.height/2))]))
                     elif pieces == 'o':
-                        img2 = Image.new('RGB', (100, 100))
-                        d = ImageDraw.Draw(img2)
-                        d.text((20, 20), 'O', fill=c_BLACK)
-                        img2.show()
+                        loadImg_y = pyg.image.load(imgy+".png")
+                        screen.blit(loadImg_y, ([int(float(x - img_y.width/2)), int(float(y - img_y.height/2))]))
                     
-                    #pieces_show = font.render(self.game_board[r][c], True, change_color)
-                    #x = WIDTH / 8 * c + WIDTH / 16
-                    #y = HEIGHT / 8 * r + HEIGHT / 16
-                    #screen.blit(pieces_show, [int(float(x - pieces_show.get_width()/2)), int(float(y - pieces_show.get_height()/2))])
-
 def get_mouse_x(mouse_position):
     x = mouse_position[0]
     for i in range(1,8):
@@ -95,17 +89,25 @@ def get_mouse_y(mouse_position):
             return i-1
     return 7
 
-def make_pieces_image():
-    image = Image.open("X.png")
-    draw = ImageDraw.Draw(image)
-    leftUpPoint = (x-r, y-r)
-    rightDownPoint = (x+r, y+r)
-    twoPointList = [leftUpPoint, rightDownPoint]
-    draw.ellipse(twoPointList, fill=(255,0,0,255))
+def make_pieces_image(img, color):
+    dr = ImageDraw.Draw(img)
+    dr.ellipse((0,0,100,100), color)
+
+def save_pieces_image(img, color, string):
+    make_pieces_image(img, color)
+    img.save(string+".png")
                     
 pyg.init()
 size = (WIDTH, HEIGHT)
 screen = pyg.display.set_mode(size)
+
+# create and save board pieces
+img_x = Image.new("RGB", (60,60), c_BEIGE)
+img_y = Image.new("RGB", (60,60), c_BEIGE)
+img_clicked = Image.new("RGB", (60,60), c_BEIGE)
+save_pieces_image(img_x, c_RED, "img_x")
+save_pieces_image(img_y, c_BLACK, "img_y")
+save_pieces_image(img_clicked, c_GREEN, "img_g")
 
 g = Game()
 
@@ -131,7 +133,7 @@ while not is_done:
     # fill background color
     screen.fill(c_BEIGE)
     # draw game board
-    g.draw()
+    g.draw("img_x", "img_y", "img_g")
     # keep updating the graphics
     pyg.display.flip()
 
