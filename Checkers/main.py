@@ -40,10 +40,11 @@ class Game:
         row = get_mouse_y(mouse_position)
         column = get_mouse_x(mouse_position)
         if self.token:
-            return True
+            self.token = None
         else:
             if self.game_board[row][column].lower() == self.players[self.turn%2]:
                 self.token = [row, column]
+                #screen.blit(self.game_board[row][column].lower(), (column, row))
         
     def draw(self):
         for i in range(9):
@@ -102,7 +103,7 @@ while not is_done:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         # if user clicked mouse, get click position 
         if event.type == pyg.MOUSEBUTTONDOWN:
-            print ('Mouse clicked!')
+            #print ('Mouse clicked!')
             g.check_mouse_click(pyg.mouse.get_pos())
         	
     # fill background color
