@@ -1,4 +1,7 @@
 import pygame as pyg
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 from collections import namedtuple
 import math as m
 import random as r
@@ -62,10 +65,21 @@ class Game:
                     if self.token[0] == r and self.token[1] == c:
                         change_color = c_GREEN
                 if pieces != '_':
-                    pieces_show = font.render(self.game_board[r][c], True, change_color)
-                    x = WIDTH / 8 * c + WIDTH / 16
-                    y = HEIGHT / 8 * r + HEIGHT / 16
-                    screen.blit(pieces_show, [int(float(x - pieces_show.get_width()/2)), int(float(y - pieces_show.get_height()/2))])
+                    if pieces == 'x':
+                        img = Image.new('RGB', (100, 100), color=c_RED)
+                        d = ImageDraw.Draw(img)
+                        d.text((20, 20), 'X', fill=c_RED)
+                        img.show()
+                    elif pieces == 'o':
+                        img2 = Image.new('RGB', (100, 100))
+                        d = ImageDraw.Draw(img2)
+                        d.text((20, 20), 'O', fill=c_BLACK)
+                        img2.show()
+                    
+                    #pieces_show = font.render(self.game_board[r][c], True, change_color)
+                    #x = WIDTH / 8 * c + WIDTH / 16
+                    #y = HEIGHT / 8 * r + HEIGHT / 16
+                    #screen.blit(pieces_show, [int(float(x - pieces_show.get_width()/2)), int(float(y - pieces_show.get_height()/2))])
 
 def get_mouse_x(mouse_position):
     x = mouse_position[0]
@@ -80,6 +94,14 @@ def get_mouse_y(mouse_position):
         if y < i*HEIGHT/8:
             return i-1
     return 7
+
+def make_pieces_image():
+    image = Image.open("X.png")
+    draw = ImageDraw.Draw(image)
+    leftUpPoint = (x-r, y-r)
+    rightDownPoint = (x+r, y+r)
+    twoPointList = [leftUpPoint, rightDownPoint]
+    draw.ellipse(twoPointList, fill=(255,0,0,255))
                     
 pyg.init()
 size = (WIDTH, HEIGHT)
