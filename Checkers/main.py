@@ -77,7 +77,15 @@ class Game:
                     elif pieces == 'o':
                         loadImg_y = pyg.image.load(imgy+".png")
                         screen.blit(loadImg_y, ([int(float(x - img_y.width/2)), int(float(y - img_y.height/2))]))
-                    
+
+    def validate_moves(self, player, location, nextrow, nextcol):
+        currrow = location[0]
+        currcol = location[1]
+        thistoken = self.game_board[currrow][currcol]
+
+        
+        
+
 def get_mouse_x(mouse_position):
     x = mouse_position[0]
     for i in range(1,8):
