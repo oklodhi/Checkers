@@ -46,8 +46,11 @@ class Game:
             self.token = None
         else:
             if self.game_board[row][column].lower() == self.players[self.turn%2]:
-                self.token = [row, column]
-                screen.blit(self.game_board[row][column].lower(), (column, row))
+                self.token = [row, column+1]
+
+                print(row)
+                print(column)
+                #screen.blit(img_clicked, (column, row))
         
     def draw(self, imgx, imgy, imgg):
         for i in range(9):
@@ -129,6 +132,7 @@ while not is_done:
         if event.type == pyg.MOUSEBUTTONDOWN:
             #print ('Mouse clicked!')
             g.check_mouse_click(pyg.mouse.get_pos())
+            pyg.display.update()
         	
     # fill background color
     screen.fill(c_BEIGE)
