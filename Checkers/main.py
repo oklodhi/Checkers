@@ -29,7 +29,12 @@ class Game:
         self.players = ['x','o']
         self.token = None
         self.can_jump = False
-        pyg.display.set_caption("%s's turn" % self.players[self.turn % 2])
+
+        if self.players[self.turn % 2] == 0:
+            pyg.display.set_caption("Black's Turn")
+        elif self.players[self.turn % 2 == 1]:
+            pyg.display.set_caption("Red's Turn")
+        
         self.game_board = [ ['x','_','x','_','x','_','x','_'],
                             ['_','x','_','x','_','x','_','x'],
                             ['x','_','x','_','x','_','x','_'],
@@ -46,11 +51,11 @@ class Game:
             self.token = None
         else:
             if self.game_board[row][column].lower() == self.players[self.turn%2]:
-                self.token = [row, column+1]
-
-                print(row)
-                print(column)
-                #screen.blit(img_clicked, (column, row))
+                if column == 7:
+                    print(str(row) + str(' + ') + str(column))
+                    self.token = [row, column+2]
+                else:
+                    self.token = [row, column+1]
         
     def draw(self, imgx, imgy, imgg):
         for i in range(9):
@@ -60,10 +65,6 @@ class Game:
         for r in range(len(self.game_board)):
             for c in range(len(self.game_board[r])):
                 pieces = self.game_board[r][c]
-                #if pieces == 'x':
-                   # change_color = c_RED
-                #else:
-                   # change_color = c_BLACK
                 if self.token:
                     if self.token[0] == r and self.token[1] == c:
                         loadImg_g = pyg.image.load(imgg+".png")
